@@ -12,7 +12,7 @@ var DS = require('dslink'),
 				{ name: "name", type: String, alias: "n", description: "The name of the dslink. Default: os-dslink"}
 	]),
 	args = cli.parse(),
-	host = args.host,
+	broker = args.broker,
 	linkName = args.name || 'os-dslink',
 	pollerInterval = args.interval || 5000;
 
@@ -23,8 +23,8 @@ var DS = require('dslink'),
 		}));
 	}
 
-	if (!host) {
-		return console.error('You must specify a host to connect to. IE: node index.js -h http://localhost:8080');
+	if (!broker) {
+		return console.error('You must specify a broker to connect to. IE: node index.js -b http://localhost:8080');
 	}
 
 
@@ -190,7 +190,7 @@ provider.root.load({
 	}
 });
 
-responder = new DS.Responder(new DS.WebSocketClient(linkName, host), provider);
+responder = new DS.Responder(new DS.WebSocketClient(linkName, broker), provider);
 
 setInterval(function () {
 	updateMetrics();
