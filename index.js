@@ -5,11 +5,11 @@ var DS = require('dslink'),
 	provider = new DS.NodeProvider(),
 	gbToBytes = 1024 * 1024 * 1024,
 	responder,
-	cli = cla([
-				{ name: "help", type: Boolean, defaultOption: true},
-    			{ name: "host", type: String, alias: "h", description: "The host you want the dslink to connect to" },
-			    { name: "interval", type: Number, alias: "i", description: "How often (in milliseconds) you want to update metrics. Default: 5000"},
-			    { name: "name", type: String, alias: "n", description: "The name of the dslink. Default: os-dslink"}
+	cli = cla([{ name: "help", type: Boolean, alias: "h", defaultOption: true},
+    			{ name: "broker", type: String, alias: "b", description: "The broker url you want the dslink to connect to" },
+    			// { name: "key", type: String, alias: "k", description: "The key" },
+				{ name: "interval", type: Number, alias: "i", description: "How often (in milliseconds) you want to update metrics. Default: 5000"},
+				{ name: "name", type: String, alias: "n", description: "The name of the dslink. Default: os-dslink"}
 	]),
 	args = cli.parse(),
 	host = args.host,
