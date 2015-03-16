@@ -150,7 +150,7 @@ var updateCPUStats = function () {
 };
 
 
-provider.root.load({
+provider.load({
 	arch: {
 		'$type': 'string',
 		'?value': ''
