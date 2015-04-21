@@ -1,5 +1,5 @@
 {
-  "name": "os-dslink",
+  "name": "dslink-javascript-system",
   "version": "0.1.0",
   "description": "",
   "main": "index.js",
@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "chai": "^2.1.0",
-    "command-line-args": "^0.5.5",
     "node-diskfree": "~0.1.0",
     "sdk-dslink-javascript": "git://github.com/IOT-DSA/sdk-dslink-javascript"
   },

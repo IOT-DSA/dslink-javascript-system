@@ -1,31 +1,32 @@
 var DS = require('dslink'),
 	os = require('os'),
 	df = require('node-diskfree'),
-	cla = require('command-line-args'),
 	provider = new DS.NodeProvider(),
 	gbToBytes = 1024 * 1024 * 1024,
-	responder,
-	cli = cla([{ name: "help", type: Boolean, alias: "h", defaultOption: true},
-    			{ name: "broker", type: String, alias: "b", description: "The broker url you want the dslink to connect to" },
-    			// { name: "key", type: String, alias: "k", description: "The key" },
-				{ name: "interval", type: Number, alias: "i", description: "How often (in milliseconds) you want to update metrics. Default: 5000"},
-				{ name: "name", type: String, alias: "n", description: "The name of the dslink. Default: os-dslink"}
-	]),
-	args = cli.parse(),
-	broker = args.broker,
-	linkName = args.name || 'os-dslink',
-	pollerInterval = args.interval || 5000;
+	pollerInterval = 2000,
+	linkName = 'system-dslink',
+	lastAverage;
 
-	if (args.help) {
-		return console.log(cli.getUsage({
-			header: "DS Link for system metrics.",
-		    footer: "For more information, visit http://github.com/IOT-DSA/os-dslink"
-		}));
-	}
 
-	if (!broker) {
-		return console.error('You must specify a broker to connect to. IE: node index.js -b http://localhost:8080');
-	}
+// var cpuAverage = function () {
+ 
+//   //Initialise sum of idle and time of cores and fetch CPU info
+//   var idle = 0,
+//   	  total = 0,
+//   	  cpus = os.cpus();
+ 
+// 	for(var i = 0, i < cpus.length; i++) {
+// 		var cpu = cpus[i];
+//     	for(type in cpu.times) {
+//     		total += cpu.times[type];
+//    		}     
+ 
+//  		idle += cpu.times.idle;
+//   }
+//   return {idle: idle / cpus.length,  total: total / cpus.length};
+// };
+
+// lastAverage = cpuAverage();
 
 
 var updateMetrics = function () {
@@ -95,10 +96,16 @@ var updateDiskStats = function () {
 
 var updateCPUStats = function () {
 	//cpus
-	provider.getNode('/cpus/load').value = new DS.Value(os.loadavg()[0]);
+	
 
 	var cpus = os.cpus(),
+		avg = os.loadavg(),
 		i, cpu, node;
+
+	// provider.getNode('/cpus/usage').value = new DS.Value()
+	provider.getNode('/cpus/load/one').value = new DS.Value(avg[0]);
+	provider.getNode('/cpus/load/five').value = new DS.Valueavg[1]);
+	provider.getNode('/cpus/load/fifteen').value = new DS.Valueavg[2]);
 	for (i = 0; i < cpus.length; i++) {
 		cpu = cpus[i];
 		node;
@@ -184,13 +191,23 @@ provider.load({
 	disks: {},
 	cpus: {
 		load: {
-			'$type': 'number',
-			'?value': 0
+			one: {
+				'$type': 'number',
+				'?value': 0
+			},
+			five: {
+				'$type': 'number',
+				'?value': 0
+			},
+			fifteen: {
+				'$type': 'number',
+				'?value': 0
+			}
 		}
 	}
 });
 
-responder = new DS.Responder(new DS.WebSocketClient(linkName, broker), provider);
+(new DS.Link(linkName, provider)).connect();
 
 setInterval(function () {
 	updateMetrics();
