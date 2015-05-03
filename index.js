@@ -104,8 +104,8 @@ var updateCPUStats = function () {
 
 	// provider.getNode('/cpus/usage').value = new DS.Value()
 	provider.getNode('/cpus/load/one').value = new DS.Value(avg[0]);
-	provider.getNode('/cpus/load/five').value = new DS.Valueavg[1]);
-	provider.getNode('/cpus/load/fifteen').value = new DS.Valueavg[2]);
+	provider.getNode('/cpus/load/five').value = new DS.Value(avg[1]);
+	provider.getNode('/cpus/load/fifteen').value = new DS.Value(avg[2]);
 	for (i = 0; i < cpus.length; i++) {
 		cpu = cpus[i];
 		node;
