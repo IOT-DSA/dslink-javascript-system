@@ -1,0 +1,17 @@
+{
+  "name": "dslink-javascript-system",
+  "version": "1.0.0",
+  "description": "JavaScript System DSLink",
+  "main": "index.js",
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "getDependencies": [
+    "npm install"
+  ],
+  "configs": {
+    "broker": {
+      "type": "url"
+    }
+  }
+}
